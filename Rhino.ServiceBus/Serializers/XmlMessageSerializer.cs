@@ -16,7 +16,7 @@ namespace Rhino.ServiceBus.Serializers
 {
     public class XmlMessageSerializer : IMessageSerializer
     {
-        private const int MaxNumberOfAllowedItemsInCollection = 256;
+        private const int MaxNumberOfAllowedItemsInCollection = int.MaxValue;
         private readonly IReflection reflection;
         private readonly IServiceLocator serviceLocator;
         private readonly Hashtable<Type, bool> typeHasConvertorCache = new Hashtable<Type, bool>();
@@ -33,7 +33,7 @@ namespace Rhino.ServiceBus.Serializers
 
         public void Serialize(object[] messages, Stream messageStream)
         {
-            if(messages.Length> MaxNumberOfAllowedItemsInCollection)
+            if(messages.Length> 256)
                 throw new UnboundedResultSetException("A message batch is limited to 256 messages");
 
             var namespaces = GetNamespaces(messages);

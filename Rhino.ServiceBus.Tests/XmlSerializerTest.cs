@@ -126,7 +126,7 @@ namespace Rhino.ServiceBus.Tests
         }
 
         [Fact]
-        public void Trying_to_send_message_with_list_of_more_than_256_items_will_fail()
+        public void Trying_to_send_message_with_list_of_more_than_256_items_will__not_fail()
         {
             var serializer = new XmlMessageSerializer(new DefaultReflection(),
                                                       new CastleServiceLocator(new WindsorContainer()));
@@ -138,15 +138,10 @@ namespace Rhino.ServiceBus.Tests
             {
               order.OrderLines[i] = new OrderLine();  
             }
-            try
-            {
-                serializer.Serialize(new[] {order}, new MemoryStream());
-                Assert.False(true, "should throw");
-            }
-            catch (SerializationException e)
-            {
-                Assert.IsType<UnboundedResultSetException>(e.InnerException);  
-            }
+            
+            serializer.Serialize(new[] {order}, new MemoryStream());
+            Assert.True(true, "should not throw");
+            
         }
 
         [Fact]
